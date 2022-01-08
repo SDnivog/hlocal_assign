@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <metaname="viewport"content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Django Assignment</title>
+  </head>
+  <body>
+    <h2>Person Details</h2>
+
+    <formmethod="post" id="personForm" data-states-url="{% url 'ajax_load_states' %}">
+      {% csrf_token %} {{ form.as_p }}
+      <input type="submit" value="Submit" />
+
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+      $("#id_country").change(function () {
+        const url = $("#personForm").attr("data-states-url");
+        const countryId = $(this).val();
+        $.ajax({
+          url: url,
+          data: {
+            country_id: countryId,
+          },
+          success: function (data) {
+            $("#id_state").html(data);
+          },
+        });
+      });
+      $("#id_state").change(function () {
+        const url = $("#personForm").attr("data-districts-url");
+        const stateId = $(this).val();
+        $.ajax({
+          url: url,
+          data: {
+            state_id: stateId,
+          },
+          success: function (data) {
+            $("#id_district").html(data);
+          },
+        });
+      });
+      $("#id_district").change(function () {
+        const url = $("#personForm").attr("data-cities-url");
+        const districtId = $(this).val();
+        $.ajax({
+          url: url,
+          data: {
+            district_id: districtId,
+          },
+          success: function (data) {
+            $("#id_city").html(data);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
